@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jongpark <jongpark@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyun <hyun@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/12 12:05:21 by jongpark          #+#    #+#             */
-/*   Updated: 2021/07/15 19:55:48 by jongpark         ###   ########.fr       */
+/*   Updated: 2021/10/31 14:40:08 by hyun             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,24 +55,27 @@ int	init_fork_mutex(t_rule *rule, pthread_mutex_t *alive_mutex)
 	return (0);
 }
 
-void	init_philos(t_rule *rule, t_philo *philos, pthread_mutex_t *alive_mutex)
+void	init_philos(t_rule *rule, t_philo *philos, pthread_mutex_t *alive_mutex, pthread_mutex_t *print_mutex)
 {
 	int			t;
 	pthread_t	tid;
+	time_t		start_time;
 
 	t = -1;
+	start_time = get_time_ms();
 	while (++t < rule->num_philo)
 	{
 		philos[t].id = t;
 		philos[t].time_die = rule->time_die;
 		philos[t].time_eat = rule->time_eat;
 		philos[t].time_sleep = rule->time_sleep;
-		philos[t].start_time = get_time_ms();
+		philos[t].start_time = start_time;
 		philos[t].ate_time = philos[t].start_time;
 		philos[t].remained = rule->num_eat;
 		philos[t].is_alive = &(rule->is_alive);
 		philos[t].left_fork = &rule->forks[t];
 		philos[t].alive_mutex = alive_mutex;
+		philos[t].print_mutex = print_mutex;
 		if (t < rule->num_philo - 1)
 			philos[t].right_fork = &rule->forks[t + 1];
 		else
@@ -90,6 +93,7 @@ int	main(int argc, char **argv)
 	int				t;
 	t_philo			*philos;
 	pthread_mutex_t	alive_mutex;
+	pthread_mutex_t	print_mutex;
 
 	if (make_rule(&rule, argc, argv) == -1
 		|| init_fork_mutex(&rule, &alive_mutex) == -1)
@@ -97,7 +101,7 @@ int	main(int argc, char **argv)
 	philos = (t_philo *)malloc(sizeof(t_philo) * rule.num_philo);
 	if (!philos)
 		return (-1);
-	init_philos(&rule, philos, &alive_mutex);
+	init_philos(&rule, philos, &alive_mutex, &print_mutex);
 	rule.philos = &philos[0];
 	t = -1;
 	while (++t < rule.num_philo)

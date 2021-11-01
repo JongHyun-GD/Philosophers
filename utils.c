@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jongpark <jongpark@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyun <hyun@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/12 12:15:47 by jongpark          #+#    #+#             */
-/*   Updated: 2021/07/15 19:33:39 by jongpark         ###   ########.fr       */
+/*   Updated: 2021/10/31 14:42:55 by hyun             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,4 +55,11 @@ time_t	get_time_ms(void)
 
 	gettimeofday(&time, 0);
 	return (time.tv_sec * 1000 + time.tv_usec / 1000);
+}
+
+void	printf_safe(char *str, time_t start_time, int id, pthread_mutex_t *print_mutex)
+{
+	pthread_mutex_lock(print_mutex);
+	printf(str, get_time_ms() - start_time, id);
+	pthread_mutex_unlock(print_mutex);
 }

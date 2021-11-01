@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jongpark <jongpark@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyun <hyun@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/15 19:53:32 by jongpark          #+#    #+#             */
-/*   Updated: 2021/10/29 13:44:00 by jongpark         ###   ########.fr       */
+/*   Updated: 2021/10/31 14:43:42 by hyun             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,23 +18,23 @@ int	philo_take_fork(t_philo *ptr)
 	{
 		pthread_mutex_lock(ptr->left_fork);
 		if (*(ptr->is_alive))
-			printf("\033[32m%ldms %d has taken a fork\n\033[37m",
-				get_time_ms() - ptr->start_time, ptr->id);
+			printf_safe("\033[32m%ldms %d has taken a fork\n\033[37m",
+				ptr->start_time, ptr->id, ptr->print_mutex);
 		pthread_mutex_lock(ptr->right_fork);
 		if (*(ptr->is_alive))
-			printf("\033[32m%ldms %d has taken a fork\n\033[37m",
-				get_time_ms() - ptr->start_time, ptr->id);
+			printf_safe("\033[32m%ldms %d has taken a fork\n\033[37m",
+				ptr->start_time, ptr->id, ptr->print_mutex);
 	}
 	else
 	{
 		pthread_mutex_lock(ptr->right_fork);
 		if (*(ptr->is_alive))
-			printf("\033[32m%ldms %d has taken a fork\n\033[37m",
-				get_time_ms() - ptr->start_time, ptr->id);
+			printf_safe("\033[32m%ldms %d has taken a fork\n\033[37m",
+				ptr->start_time, ptr->id, ptr->print_mutex);
 		pthread_mutex_lock(ptr->left_fork);
 		if (*(ptr->is_alive))
-			printf("\033[32m%ldms %d has taken a fork\n\033[37m",
-				get_time_ms() - ptr->start_time, ptr->id);
+			printf_safe("\033[32m%ldms %d has taken a fork\n\033[37m",
+				ptr->start_time, ptr->id, ptr->print_mutex);
 	}
 	return (0);
 }
@@ -46,8 +46,8 @@ int	philo_eat(t_philo *ptr)
 		ptr->remained--;
 	if (*(ptr->is_alive))
 	{
-		printf("\033[32m%ldms %d is eating\n\033[37m",
-			get_time_ms() - ptr->start_time, ptr->id);
+		printf_safe("\033[32m%ldms %d is eating\n\033[37m",
+			ptr->start_time, ptr->id, ptr->print_mutex);
 		usleep(ptr->time_eat * 1000);
 	}
 	pthread_mutex_unlock(ptr->left_fork);
@@ -57,11 +57,11 @@ int	philo_eat(t_philo *ptr)
 
 int	philo_sleep(t_philo *ptr)
 {
-	printf("%ldms %d is sleeping\n", get_time_ms() - ptr->start_time, ptr->id);
+	printf_safe("%ldms %d is sleeping\n", ptr->start_time, ptr->id, ptr->print_mutex);
 	usleep(ptr->time_sleep * 1000);
 	if (!*(ptr->is_alive))
 		return (0);
-	printf("%ldms %d is thinking\n", get_time_ms() - ptr->start_time, ptr->id);
+	printf_safe("%ldms %d is thinking\n", ptr->start_time, ptr->id, ptr->print_mutex);
 	usleep(50);
 	return (0);
 }
@@ -104,8 +104,8 @@ void	*god(void *arg)
 			pthread_mutex_lock(ptr->alive_mutex);
 			if (*(ptr->is_alive))
 			{
-				printf("\033[31m%ldms %d died\n\033[37m",
-					get_time_ms() - ptr->start_time, ptr->id);
+				printf_safe("\033[31m%ldms %d died\n\033[37m",
+					ptr->start_time, ptr->id, ptr->print_mutex);
 				*(ptr->is_alive) = 0;
 			}
 			if (ptr->id == 0)

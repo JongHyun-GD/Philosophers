@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyun <hyun@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jongpark <jongpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/15 19:53:32 by jongpark          #+#    #+#             */
-/*   Updated: 2021/10/31 14:43:42 by hyun             ###   ########.fr       */
+/*   Updated: 2021/11/01 16:14:49 by jongpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,11 +57,13 @@ int	philo_eat(t_philo *ptr)
 
 int	philo_sleep(t_philo *ptr)
 {
-	printf_safe("%ldms %d is sleeping\n", ptr->start_time, ptr->id, ptr->print_mutex);
+	printf_safe("%ldms %d is sleeping\n",
+		ptr->start_time, ptr->id, ptr->print_mutex);
 	usleep(ptr->time_sleep * 1000);
 	if (!*(ptr->is_alive))
 		return (0);
-	printf_safe("%ldms %d is thinking\n", ptr->start_time, ptr->id, ptr->print_mutex);
+	printf_safe("%ldms %d is thinking\n",
+		ptr->start_time, ptr->id, ptr->print_mutex);
 	usleep(50);
 	return (0);
 }

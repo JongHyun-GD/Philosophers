@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyun <hyun@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jongpark <jongpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/12 12:05:21 by jongpark          #+#    #+#             */
-/*   Updated: 2021/10/31 14:40:08 by hyun             ###   ########.fr       */
+/*   Updated: 2021/11/01 16:25:55 by jongpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,16 @@ int	make_rule(t_rule *rule, int argc, char **argv)
 	return (0);
 }
 
+void	start_threads(t_philo *philo_t)
+{
+	pthread_t	tid;
+
+	pthread_create(&tid, 0, philo, philo_t);
+	philo_t->tid = tid;
+	pthread_create(&tid, 0, god, philo_t);
+	philo_t->god_tid = tid;
+}
+
 int	init_fork_mutex(t_rule *rule, pthread_mutex_t *alive_mutex)
 {
 	int	t;
@@ -55,10 +65,10 @@ int	init_fork_mutex(t_rule *rule, pthread_mutex_t *alive_mutex)
 	return (0);
 }
 
-void	init_philos(t_rule *rule, t_philo *philos, pthread_mutex_t *alive_mutex, pthread_mutex_t *print_mutex)
+void	init_philos(t_rule *rule, t_philo *philos,
+				pthread_mutex_t *alive_mutex, pthread_mutex_t *print_mutex)
 {
 	int			t;
-	pthread_t	tid;
 	time_t		start_time;
 
 	t = -1;
@@ -80,10 +90,7 @@ void	init_philos(t_rule *rule, t_philo *philos, pthread_mutex_t *alive_mutex, pt
 			philos[t].right_fork = &rule->forks[t + 1];
 		else
 			philos[t].right_fork = &rule->forks[0];
-		pthread_create(&tid, 0, philo, &philos[t]);
-		philos[t].tid = tid;
-		pthread_create(&tid, 0, god, &philos[t]);
-		philos[t].god_tid = tid;
+		start_threads(&philos[t]);
 	}
 }
 

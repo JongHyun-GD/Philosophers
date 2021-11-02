@@ -6,7 +6,7 @@
 /*   By: jongpark <jongpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/15 19:53:32 by jongpark          #+#    #+#             */
-/*   Updated: 2021/11/01 16:14:49 by jongpark         ###   ########.fr       */
+/*   Updated: 2021/11/02 21:09:59 by jongpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	philo_eat(t_philo *ptr)
 	{
 		printf_safe("\033[32m%ldms %d is eating\n\033[37m",
 			ptr->start_time, ptr->id, ptr->print_mutex);
-		usleep(ptr->time_eat * 1000);
+		my_sleep(ptr->time_eat);
 	}
 	pthread_mutex_unlock(ptr->left_fork);
 	pthread_mutex_unlock(ptr->right_fork);
@@ -59,12 +59,12 @@ int	philo_sleep(t_philo *ptr)
 {
 	printf_safe("%ldms %d is sleeping\n",
 		ptr->start_time, ptr->id, ptr->print_mutex);
-	usleep(ptr->time_sleep * 1000);
+	my_sleep(ptr->time_sleep);
 	if (!*(ptr->is_alive))
 		return (0);
 	printf_safe("%ldms %d is thinking\n",
 		ptr->start_time, ptr->id, ptr->print_mutex);
-	usleep(50);
+	usleep(200);
 	return (0);
 }
 
@@ -75,7 +75,7 @@ void	*philo(void *arg)
 	ptr = arg;
 	if (ptr->id % 2 == 1)
 	{
-		usleep(50);
+		usleep(100);
 	}
 	while (*(ptr->is_alive) && (ptr->remained > 0 || ptr->remained == -42))
 	{

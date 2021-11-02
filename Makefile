@@ -1,10 +1,11 @@
 TARGET = philo
 SRCS =	main.c \
 		philo.c \
-		utils.c
+		utils.c \
+		utils2.c
 OBJS =	$(SRCS:.c=.o)
 CC =	gcc
-CF =	-Wall -Wextra -Werror -Iincludes -pthread 
+CF =	-Wall -Wextra -Werror -Iincludes -pthread
 
 all : $(TARGET)
 

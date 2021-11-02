@@ -6,7 +6,7 @@
 /*   By: jongpark <jongpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/12 12:15:47 by jongpark          #+#    #+#             */
-/*   Updated: 2021/11/01 16:15:04 by jongpark         ###   ########.fr       */
+/*   Updated: 2021/11/02 21:07:42 by jongpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,4 +63,15 @@ void	printf_safe(char *str, time_t start_time,
 	pthread_mutex_lock(print_mutex);
 	printf(str, get_time_ms() - start_time, id);
 	pthread_mutex_unlock(print_mutex);
+}
+
+void	my_sleep(time_t time_to_sleep)
+{
+	time_t	start_time;
+
+	start_time = get_time_ms();
+	while (get_time_ms() - start_time < time_to_sleep)
+	{
+		usleep(100);
+	}
 }

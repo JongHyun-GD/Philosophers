@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyun <hyun@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jongpark <jongpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/12 12:10:03 by jongpark          #+#    #+#             */
-/*   Updated: 2021/10/31 13:46:26 by hyun             ###   ########.fr       */
+/*   Updated: 2021/11/02 21:33:31 by jongpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ typedef struct s_philo
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
 	pthread_mutex_t	*alive_mutex;
-	pthread_mutex_t *print_mutex;
+	pthread_mutex_t	*print_mutex;
 }					t_philo;
 
 typedef struct s_rule

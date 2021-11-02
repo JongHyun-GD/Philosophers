@@ -6,7 +6,7 @@
 /*   By: jongpark <jongpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/12 12:05:21 by jongpark          #+#    #+#             */
-/*   Updated: 2021/11/01 16:25:55 by jongpark         ###   ########.fr       */
+/*   Updated: 2021/11/02 21:32:14 by jongpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,8 @@ int	make_rule(t_rule *rule, int argc, char **argv)
 {
 	int	t;
 
-	if (argc != 5 && argc != 6)
-	{
-		printf("\033[31mError: invalid arguments\n\033[037m");
+	if (is_valid_argv(argc, argv) == -1)
 		return (-1);
-	}
 	rule->num_philo = my_atoi(argv[1], &t);
 	rule->time_die = my_atoi(argv[2], &t);
 	rule->time_eat = my_atoi(argv[3], &t);
